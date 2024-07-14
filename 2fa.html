@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Two-Factor Authentication</title>
+  </head>
+  <body>
+    <h2>Autenticação de Dois Fatores</h2>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.otp.label }}<br>
+        {{ form.otp(size=32) }}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
+  </body>
+</html>
