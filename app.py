@@ -2,16 +2,10 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 from forms import LoginForm, TwoFactorForm
 import pyotp
 
-from views import views
-
-
 app = Flask(__name__)
 
 
-# para acessar essa pagina e "/views" se quizer depois acessar outra pagina /views/home etc...
-app.register_blueprint(views, url_prefix='/views')
-
-app.secret_key = 'supersecretkey' # Necessário para usar sessões
+app.secret_key = 'supersecret_key' # Necessário para usar sessões
 
 # Usuário e senha de exemplo
 USER_DATA = {
