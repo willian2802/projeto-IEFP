@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from forms import LoginForm, TwoFactorForm
+from logs import log_register
 import pyotp
 
 app = Flask(__name__)
@@ -27,6 +28,8 @@ def login():
         else:
             flash('Credenciais inválidas. Tente novamente.', 'danger')
 
+    # Registra o log e renderiza a tela de login
+    log_register()
     return render_template('login.html', form=form)
 
 @app.route('/two-factor', methods=['GET', 'POST'])
@@ -45,6 +48,7 @@ def two_factor():
         else:
             flash('Código 2FA inválido. Tente novamente.', 'danger')
 
+    # Registra o log e renderiza a tela de 2FA
     return render_template('2fa.html', form=form)
 
 @app.route('/protected')

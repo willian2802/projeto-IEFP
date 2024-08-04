@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from flask import request
+from DB import add_log_to_DB
 
 
 Logs_Storage = []
@@ -25,7 +26,7 @@ class Log:
         'path': self.path,
         'coment': self.coment
         }
-        Logs_Storage.append(log)
+        add_log_to_DB(log)
 
     def show_log(self):
         return f"Current Time: {self.current_time}, IP: {self.ip_address}, Path: {self.path}, Agent: {self.agent}, Hash Code: {self.fingerprint}, Coment: {self.coment}"
