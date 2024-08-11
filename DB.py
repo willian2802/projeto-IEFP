@@ -34,11 +34,23 @@ def add_log_to_DB(log):
 
     # insere o log no DB
     colecao.insert_one(log)
-    
-    print (f"Document inserted with ID: {log}")
 
-    # fecha a conexação com o DB
-    # client.close()
+
+def add_IP_data_to_DB(ip_address, data):
+    db = client['sample_mflix']
+    colecao = db['IEFP_IP_Data']
+
+    update = {"$set": data}  # Update the existing document with the new data
+    filter = {"_id": ip_address}  # Filter the document by _id
+
+    # atualiza o IP_data no DB
+    result = colecao.update_one(filter, update)
+
+    # se nada for encontrado, insere um novo IP_data no DB
+    if result.matched_count == 0:
+        document = {"_id": ip_address, **data}
+        colecao.insert_one(document)
+        print(f"Document inserted with ID: {ip_address}")
 
 # ----------- IP DATA DB -----------
 
@@ -55,19 +67,6 @@ def add_IP_data_to_DB(new_ip_data):
     
     print (f"Document inserted with ID: {new_ip_data}")
 
-    # fecha a conexação com o DB
-    # client.close()
-
-# documents = collection.find({})
-# for doc in documents:
-#     for ip, data in doc.items():
-#         if ip != "_id":
-#             new_doc = data
-#             new_doc["_id"] = ip
-#             collection.insert_one(new_doc)
-#     collection.delete_one({"_id": doc["_id"]})
-
-# print("Estrutura reorganizada com sucesso!")
 
 
 def get_ip_data_from_db(ip_address):
@@ -84,4 +83,4 @@ def get_ip_data_from_db(ip_address):
         return data[ip_address]
     return None
 
-get_ip_data_from_db("127.0.0.1")
+
