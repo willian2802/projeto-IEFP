@@ -4,6 +4,7 @@ html, body {
 }
 
 main {
+    flex-direction: column;
     height: 100%;
     background-image: url("./login_img.webp");
     background-size: cover;
@@ -11,7 +12,7 @@ main {
     background-repeat: no-repeat;
 }
 
-.container-login {
+.background {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,5 +21,47 @@ main {
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    
+}
+
+.login_container { 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.login_container h2 {
+    margin-bottom: 20px;
+}
+
+.login_container .col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login_container .col input {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+}
+
+.login_container .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.login_container .button-group button {
+    width: 48%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }

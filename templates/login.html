@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,25 +14,25 @@
 <body>
   <main>
 
-    <div class="container-login">
-      <h2>Login</h2>
-      <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>
-          {{ form.username.label }}<br>
-          {{ form.username(size=32) }}
-        </p>
-        <p>
-          {{ form.password.label }}<br>
-          {{ form.password(size=32) }}
-        </p>
-        <p>{{ form.submit() }}</p>
-      </form>
+    <div class="background">
+
+        <div class="login_container">
+          <h2 id="login_title">Login</h2>
+            <div class="login_input_zone col">
+                <input type="text" id="username" name="username" placeholder="Nome">
+                <input type="password" id="password" name="password" placeholder="Senha">
+                <div class="button-group">
+                    <button type="submit" name="action" value="login" onclick="login_part1(event)" class="btn btn-primary">Entrar</button>
+                    <button type="submit" name="action" value="register" onclick="Show_register_form(event)" class="btn btn-danger">Registrar</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
   </main>
     <!-- bootstrap and javaScript -->
-    <script type="text/javascript" src="{{ url_for('static', filename='logs.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='render.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

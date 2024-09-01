@@ -1,15 +1,18 @@
-# MONGODB_URI = "mongodb+srv://williansouza11922:Herika40@cluster0.ajgv5lu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
+from flask import session
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
+import datetime
 
 uri = "mongodb+srv://williansouza11922:Herika40@cluster0.ajgv5lu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 
+db = client['sample_mflix']
+IEFP_users_collection = db['IEFP_Users']
 
 def connect_to_mongo():
     # Selecionar o banco de dados
@@ -84,3 +87,47 @@ def get_ip_data_from_db(ip_address):
     return None
 
 
+
+
+#  ------------- Login e registro de usuário ----------------
+
+def register_user(Register_data):
+
+    username = Register_data['Name']
+    password = Register_data['Password']
+    Pergunta_secreta = Register_data['Pergunta_Seguranca']
+    Resposta = Register_data['resposta_Secreta']
+    Nivel_acesso = 1
+
+    IEFP_users_collection.insert_one({
+        'Nome': username,
+        'Nivel_acesso': Nivel_acesso,
+        'Senha': password,
+        "Pergunta_secreta": Pergunta_secreta,
+        "resposta_Secreta": Resposta,
+        "created_at": datetime.datetime.now()
+    })
+
+    return "Usuário registrado com sucesso"
+
+
+from flask import g
+
+def login_user(login_data):
+    username = login_data['Name']
+    password = login_data['Password']
+    resposta_secreta = login_data['Resposta']
+
+    # Lógica de login
+    user = IEFP_users_collection.find_one({"Nome": username, "Senha": password, "resposta_secreta": resposta_secreta})
+
+    if user:
+        g.user_id = str(user['_id'])
+        return True
+    else:
+        return False
+    
+def login_user_part2(login_data):
+
+    username = login_data['Name']
+    resposta_secreta = login_data['Resposta']
