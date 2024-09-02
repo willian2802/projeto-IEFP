@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
 from forms import LoginForm, TwoFactorForm
 from logs import log_register
-from DB import login_user, register_user, login_user_part2
+from DB import register_user, login_user_part2, login_user_part1
 import pyotp
 
 app = Flask(__name__)
@@ -25,18 +25,17 @@ def render_login():
 def login():
     # Capturar os dados enviados no corpo da requisição
     login_data = request.get_json()
-    print("??????????????????????????????????????????????????????????????????????????????????????????????????????????????")
-    print(login_data)
 
-    login_part = login_data['login_part']
+    login_part = login_data['login_process']
 
     #  part1 do login e apens o nome e a senha
     #  part2 do login e a pergunta de segurança e a resposta
     if login_part == "part1":
         resposta_do_DB = login_user_part1(login_data)
-        session['username'] = login_data['username']
+        session['username'] = login_data['Name']
     else:
-        resposta_do_DB = login_user_part2(login_data)
+        login_data['Name'] = session['username']
+        resposta_do_DB = login_user_part2(login_data, session['username'])
 
     if resposta_do_DB == True:
         session['authenticated'] = True

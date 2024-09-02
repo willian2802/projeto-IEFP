@@ -70,9 +70,9 @@ function login_part2(event) {
 
     // Atualiza o objeto com os dados de login com os novos dados, pergunta_segurança e resposta
     let usuario_a_verificar = {
-        Name: username,
-        Password: password,
-        login_process: "part1"
+        Name: pergunta_seguranca,
+        resposta_Secreta: Resposta,
+        login_process: "part2"
     }
 
     //Envia os Dados para o endereço que vai enviar para o DB

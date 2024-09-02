@@ -113,13 +113,15 @@ def register_user(Register_data):
 
 from flask import g
 
-def login_user(login_data):
+def login_user_part1(login_data):
     username = login_data['Name']
     password = login_data['Password']
-    resposta_secreta = login_data['Resposta']
 
     # Lógica de login
-    user = IEFP_users_collection.find_one({"Nome": username, "Senha": password, "resposta_secreta": resposta_secreta})
+    user = IEFP_users_collection.find_one({"Nome": username, "Senha": password})
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(user)
 
     if user:
         g.user_id = str(user['_id'])
@@ -127,7 +129,23 @@ def login_user(login_data):
     else:
         return False
     
-def login_user_part2(login_data):
+def login_user_part2(login_data, username):
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(login_data)
 
     username = login_data['Name']
-    resposta_secreta = login_data['Resposta']
+    resposta_secreta = login_data['resposta_Secreta']
+
+    user = IEFP_users_collection.find_one({"Nome": username, "Senha": resposta_secreta})
+
+    print(user)
+
+    if user:
+        g.user_id = str(user['_id'])
+        return True
+    else:
+        return False
+
+
+
