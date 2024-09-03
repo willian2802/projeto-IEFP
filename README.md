@@ -1,8 +1,11 @@
 # projeto IEFP
 Título do Projeto: Sistema de Login e Logs
 
+
 Descrição: O sistema de login e logs é um projeto que visa criar um sistema de autenticação de usuários e registro de logs de atividades.
 
+Link do vídeo de demonstração:
+https://www.loom.com/share/33c11256797b45698bbef00ea431316f
 Funcionalidades:
 
 Autenticação de usuários
