@@ -1,9 +1,8 @@
 
-from flask import session
+from flask import g
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from bson.objectid import ObjectId
 import datetime
 
 uri = "mongodb+srv://williansouza11922:Herika40@cluster0.ajgv5lu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -13,19 +12,6 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 
 db = client['sample_mflix']
 IEFP_users_collection = db['IEFP_Users']
-
-def connect_to_mongo():
-    # Selecionar o banco de dados
-    db = client['sample_mflix']
-
-    # Send a ping to confirm a successful connection
-    try:
-        client.admin.command('ping')
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-        return "You successfully connected to MongoDB!"
-    except Exception as e:
-        print(e)
-        return "Failed to connect to MongoDB"
 
 def add_log_to_DB(log):
 
@@ -86,19 +72,33 @@ def get_ip_data_from_db(ip_address):
         return data[ip_address]
     return None
 
+#  ------------- pega a pergunta de segurança do usuario do DB ----------------
+
+def grab_secret_question(username):
+    user = IEFP_users_collection.find_one({"Nome": username})
+    
+    pergunta_secreta = user["Pergunta_secreta"]
+
+    return pergunta_secreta
+
 
 
 
 #  ------------- Login e registro de usuário ----------------
 
 def register_user(Register_data):
-
     username = Register_data['Name']
     password = Register_data['Password']
     Pergunta_secreta = Register_data['Pergunta_Seguranca']
     Resposta = Register_data['resposta_Secreta']
     Nivel_acesso = 1
 
+    # verifica se o nome de usuário ja esta sendo usado no DB
+    existing_user = IEFP_users_collection.find_one({"Nome": username})
+    if existing_user:
+        return True
+
+    # If no user with the same name exists, insert the new user
     IEFP_users_collection.insert_one({
         'Nome': username,
         'Nivel_acesso': Nivel_acesso,
@@ -110,18 +110,12 @@ def register_user(Register_data):
 
     return "Usuário registrado com sucesso"
 
-
-from flask import g
-
 def login_user_part1(login_data):
     username = login_data['Name']
     password = login_data['Password']
 
     # Lógica de login
     user = IEFP_users_collection.find_one({"Nome": username, "Senha": password})
-
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(user)
 
     if user:
         g.user_id = str(user['_id'])
@@ -131,15 +125,10 @@ def login_user_part1(login_data):
     
 def login_user_part2(login_data, username):
 
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(login_data)
-
     username = login_data['Name']
     resposta_secreta = login_data['resposta_Secreta']
 
-    user = IEFP_users_collection.find_one({"Nome": username, "Senha": resposta_secreta})
-
-    print(user)
+    user = IEFP_users_collection.find_one({"Nome": username, "resposta_Secreta": resposta_secreta})
 
     if user:
         g.user_id = str(user['_id'])

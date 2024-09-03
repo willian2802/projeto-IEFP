@@ -22,11 +22,61 @@ function delete_login_data() {
     
 }
 
+// is self explanatory
+function alert_message(alert_Content) {
+
+    alert(alert_Content);
+    
+}
+
+// OLD version of the fectch
+
 // Função que atualiza o formulário de login com os inputs para a pergunta de segurança e a resposta
 // e atualiza o objeto com o primeira parte dos dados de login o Nome e a Senha
-function login_part1(event) {
-    event.preventDefault(); // Prevenir o comportamento padrão do formulário
+// function login_part1(event) {
+//     event.preventDefault(); // Prevenir o comportamento padrão do formulário
 
+//     // Capturar os valores dos inputs
+//     let username = document.getElementById('username').value;
+//     let password = document.getElementById('password').value;
+    
+//     let usuario_a_verificar = {
+//         Name: username,
+//         Password: password,
+//         login_process: "part1"
+//     }
+
+//     // sera preenchido com a pergunta de segurança quando o login for bem-sucedido
+//     let pergunta_seguranca = "";
+
+//     //Envia os Dados para o endereço que vai enviar para o DB
+//     fetch('http://127.0.0.1:5000/Secure_Login', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(usuario_a_verificar)
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         pergunta_seguranca = data;
+//         console.log("Criar a pergunta de segurança: ", pergunta_seguranca);
+//     })
+//     .catch(error => console.error('Erro: erro no envio dos dados do usuario no login_part1', error));
+
+//     // atualiza o formulário de login mostrando os inputs para a pergunta de segurança e a resposta
+//     Login_zone.innerHTML = `
+//     <p id="pergunta_seguranca">${pergunta_seguranca}</p>
+//     <input type="password" id="Resposta" name="Resposta" placeholder="Resposta">
+//     <div class="button-group">
+//         <button type="submit" name="action" value="login" onclick="login_part2(event)" class="btn btn-primary">Entrar</button>
+//     </div>
+// `
+// }
+
+function login_part1(event) {
+    event.preventDefault();
+  
     // Capturar os valores dos inputs
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
@@ -36,29 +86,33 @@ function login_part1(event) {
         Password: password,
         login_process: "part1"
     }
-
-    //Envia os Dados para o endereço que vai enviar para o DB
-    
+  
     fetch('http://127.0.0.1:5000/Secure_Login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(usuario_a_verificar)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(usuario_a_verificar)
     })
     .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Erro: erro no envio da lista_atual', error));
+    .then(data => {
+      pergunta_seguranca = data;
+  
+      // Update the Login_zone HTML here, after the pergunta_seguranca variable has been updated
+      Login_zone.innerHTML = `
+        <p>Sua Pergunta de segurança</p>
+        <p id="pergunta_seguranca">${pergunta_seguranca.status}</p>
+        <input type="password" id="Resposta" name="Resposta" placeholder="Resposta">
+        <div class="button-group">
+          <button type="submit" name="action" value="login" onclick="login_part2(event)" class="btn btn-primary">Entrar</button>
+        </div>
+      `;
+    })
+    .catch(error => console.error('Erro: erro no envio dos dados do usuario no login_part1', error));
+  }
 
-    // atualiza o formulário de login mostrando os inputs para a pergunta de segurança e a resposta
-    Login_zone.innerHTML = `
-    <input type="text" id="pergunta_seguranca" name="pergunta_seguranca" placeholder="Sua Pergunta de segurança">
-    <input type="password" id="Resposta" name="Resposta" placeholder="Resposta">
-    <div class="button-group">
-        <button type="submit" name="action" value="login" onclick="login_part2(event)" class="btn btn-primary">Entrar</button>
-    </div>
-`
-}
+
+
 
 function login_part2(event) {
     event.preventDefault(); // Prevenir o comportamento padrão do formulário
@@ -80,16 +134,19 @@ function login_part2(event) {
     fetch('http://127.0.0.1:5000/Secure_Login', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(usuario_a_verificar)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Erro: erro no envio da lista_atual', error));
-
-    // por motivos de segurança, os dados do usuario seram alterados
-    delete_login_data()
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/welcome'; // redirect to the welcome page
+        } else {
+          console.error('Login failed');
+        }
+      })
+      .catch(error => console.error('Erro: erro no envio da lista_atual', error));
 }
 
 
@@ -130,8 +187,6 @@ function Register(event) {
         Pergunta_Seguranca: pergunta_seguranca,
         resposta_Secreta: Resposta,
     }
-
-    console.log(Nova_Conta)
     
     //Envia os Dados para o endereço que vai enviar para o DB
     fetch('http://127.0.0.1:5000/Register_New_Account', {
@@ -142,8 +197,13 @@ function Register(event) {
         body: JSON.stringify(Nova_Conta)
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+        mensagem = data
+        alert_message(mensagem.message);
+    })
     .catch(error => console.error('Erro: erro no envio da lista_atual', error));
+
+    console.log("Nova conta criada com sucesso!")
 }
 
 // Envia informações para o servidor

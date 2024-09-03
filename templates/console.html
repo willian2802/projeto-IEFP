@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Logs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .log-container {
+            width: 90%;
+            max-width: 1000px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            overflow-y: auto;
+            height: 80vh;
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .log-entry {
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .log-entry h2 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+        }
+        .log-details p {
+            margin: 5px 0;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="log-container">
+        <h1>Visualização de Logs</h1>
+        <div id="logs">
+            <!-- Logs serão inseridos aqui dinamicamente pelo JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Exemplo de logs para renderizar
+        const logs = [
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+            {
+                'current_time': '2024-09-01 20:25:12',
+                'IP': '192.168.1.2',
+                'agent': 'Mozilla/5.0 (Linux; Android 10)',
+                'path': '/register',
+                'coment': 'Nova conta registrada.'
+            },
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+            {
+                'current_time': '2024-09-01 20:23:00',
+                'IP': '192.168.1.1',
+                'agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                'path': '/login',
+                'coment': 'Login efetuado com sucesso.'
+            },
+        ];
+
+        // Função para renderizar os logs na página
+        function renderLogs(logs) {
+            const logsContainer = document.getElementById('logs');
+            logsContainer.innerHTML = '';
+
+            logs.forEach(log => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+
+                logEntry.innerHTML = `
+                    <h2>Log - ${log.current_time}</h2>
+                    <div class="log-details">
+                        <p><strong>IP:</strong> ${log.IP}</p>
+                        <p><strong>Agente:</strong> ${log.agent}</p>
+                        <p><strong>Caminho:</strong> ${log.path}</p>
+                        <p><strong>Comentário:</strong> ${log.coment}</p>
+                    </div>
+                `;
+                logsContainer.appendChild(logEntry);
+            });
+        }
+
+        // Chama a função para renderizar os logs
+        renderLogs(logs);
+    </script>
+</body>
+</html>

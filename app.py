@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
-from forms import LoginForm, TwoFactorForm
 from logs import log_register
-from DB import register_user, login_user_part2, login_user_part1
+from DB import register_user, login_user_part2, login_user_part1, grab_secret_question
 import pyotp
 
 app = Flask(__name__)
@@ -9,12 +8,6 @@ app = Flask(__name__)
 
 app.secret_key = 'supersecret_key' # Necessário para usar sessões
 
-# Usuário e senha de exemplo
-USER_DATA = {
-    "username": "testuser",
-    "password": "password123",
-    "2fa_secret": pyotp.random_base32()
-}
 
 #  Pagina inicial
 @app.route('/', methods=['GET', 'POST'])
@@ -31,17 +24,25 @@ def login():
     #  part1 do login e apens o nome e a senha
     #  part2 do login e a pergunta de segurança e a resposta
     if login_part == "part1":
-        resposta_do_DB = login_user_part1(login_data)
+        login_part1_resposta = login_user_part1(login_data)
         session['username'] = login_data['Name']
+
+        if login_part1_resposta == False:
+            return jsonify({"status": "Login incorreto. Tente novamente."})
+
+        #  Retorna a pergunta de segurança para o javaScript para ser renderizado na pagina
+        pergunta_seguranca = grab_secret_question(session['username'])
+
+        return jsonify({"status": pergunta_seguranca})
     else:
         login_data['Name'] = session['username']
-        resposta_do_DB = login_user_part2(login_data, session['username'])
+        login_part2_resposta = login_user_part2(login_data, session['username'])
 
-    if resposta_do_DB == True:
+    if login_part2_resposta == True:
         session['authenticated'] = True
-        return jsonify({"status": "success"})
-    else:
-        return jsonify({"status": " tentativa de Login mal-sucedida."})
+        return jsonify({'success': True, 'message': 'Login successful'})
+    
+    return jsonify({"status": " tentativa de Login mal-sucedida."})
     
 
 @app.route('/Register_New_Account', methods=['POST'])
@@ -51,8 +52,20 @@ def Create_Account():
 
     resposta_do_DB = register_user(New_account_data)
 
+    # retornar True sequeinifica que o nome de usuario ja existe no DB
+    if resposta_do_DB == True:
+        return jsonify({"status": "alerta", "message": "Nome de Usuário ja existe. Tente novamente."})
+
     return resposta_do_DB
 
+
+@app.route('/welcome')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/nothing_here', methods=['GET'])
+def render_console():
+    return render_template('console.html')
 
 @app.route('/protected')
 def protected():
