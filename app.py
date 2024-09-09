@@ -6,6 +6,7 @@ import pyotp
 app = Flask(__name__)
 
 
+
 app.secret_key = 'supersecret_key' # Necessário para usar sessões
 
 

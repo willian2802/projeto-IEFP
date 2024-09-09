@@ -5,6 +5,18 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import datetime
 
+# from dotenv import dotenv_values
+
+# env_vars = dotenv_values('.env')
+# uri = env_vars['MONGO_URI']
+
+# Agora, ao invés de usar a string de conexão diretamente no seu código, você pode acessá-la através da variável uri.
+
+# Lembre-se de adicionar o arquivo (.env) ao seu arquivo (.gitignore) para evitar que ele seja commitado no repositório.
+
+# MONGO_URI=<seu_uri_criptografado>
+
+
 uri = "mongodb+srv://williansouza11922:Herika40@cluster0.ajgv5lu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 # Create a new client and connect to the server
