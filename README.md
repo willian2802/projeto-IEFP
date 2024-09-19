@@ -8,9 +8,8 @@ Link do vídeo de demonstração:
 https://www.loom.com/share/33c11256797b45698bbef00ea431316f
 Funcionalidades:
 
-Autenticação de usuários
+Autenticação de usuários utilizando 2FA(Two-factor authentication)
 Registro de logs de atividades
-Visualização de logs
 
 Tecnologias Utilizadas:
 
@@ -33,7 +32,7 @@ Visualização de logs: responsável por exibir os logs registrados.
 Componentes do Projeto:
 app.py: responsável por executar o aplicativo e definir as rotas.
 DB.py: responsável por interagir com o banco de dados e realizar operações de CRUD.
-logs.py: responsável por registrar e visualizar os logs.
+logs.py: responsável por registrar os logs.
 templates: pasta que contém os arquivos HTML para a interface do usuário.
 static: pasta que contém os arquivos estáticos, como CSS e JavaScript.
 Instalação e Execução:
