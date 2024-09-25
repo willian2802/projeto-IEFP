@@ -158,7 +158,7 @@ function Register(event) {
     })
     .catch(error => console.error('Erro: erro no envio da lista_atual', error));
 
-    console.log("Nova conta criada com sucesso!")
+    alert_message("Nova conta criada com sucesso!");
 }
 
 // Envia informações para o servidor
@@ -184,3 +184,7 @@ function enviar_Lista_Atual() {
     .then(data => console.log(data))
     .catch(error => console.error('Erro: erro no envio da lista_atual', error));
 }
+
+
+// --------------------------------------- Render Logs --------------------------------------
+

@@ -94,6 +94,21 @@ def grab_secret_question(username):
     return pergunta_secreta
 
 
+#  ------------- pega os logs do DB ----------------
+
+def get_logs_from_db():
+
+    # Selecionar o banco de dados
+    db = client['sample_mflix']
+
+    # Selecionar uma coleção
+    colecao = db['IEFP_Logs']
+
+    # Encontrar todos os documentos na coleção
+    logs = list(colecao.find())
+    print(logs)
+    return logs
+
 
 
 #  ------------- Login e registro de usuário ----------------
@@ -147,6 +162,3 @@ def login_user_part2(login_data, username):
         return True
     else:
         return False
-
-
-
