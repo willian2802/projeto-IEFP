@@ -22,7 +22,6 @@ function delete_login_data() {
     
 }
 
-// is self explanatory
 function alert_message(alert_Content) {
 
     alert(alert_Content);
